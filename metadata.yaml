@@ -26,20 +26,13 @@ source_repository_access: private # public | private
 # ============================================================================
 
 model_dependencies:
-  - gemma3:1b
-  # Examples:
-  # - gpt-4
-  # - claude-3-opus
+  - claude-sonnet-4-5
 
-required_egress: []
-  # Example:
-  # - https://api.openai.com
+required_egress:
+  - https://api.anthropic.com  # Claude API for LLM calls
+  - https://oauth.reddit.com   # Reddit API for fetching posts/comments
 
 required_integrations: []
-  # Example:
-  # - integration_id: slack-oauth
-  #   required: true
-  #   scopes: [chat:write, channels:read]
 
 # ============================================================================
 # I/O SPECIFICATION
@@ -48,35 +41,32 @@ required_integrations: []
 input_types:
   - type: text
     mime_types: [text/plain]
-  # Examples:
-  # - type: pdf
-  #   mime_types: [application/pdf]
 
 output_types:
-  - type: text
-    mime_types: [text/plain]
-  # Examples:
-  # - type: json
+  - type: json
+    mime_types: [application/json]
+  - type: markdown
+    mime_types: [text/markdown]
+  - type: pdf
+    mime_types: [application/pdf]
 
 input_schema:
-  date:
-    type: date
+  subreddit:
+    type: string
     required: true
-    label: "Date"
-    description: "The date to look up historical events"
-  # Examples:
-  #
-  # email:
-  #   type: string
-  #   required: true
-  #   label: "Email Address"
-  #   description: "User's email address"
-  #
-  # preferences:
-  #   type: string
-  #   required: false
-  #   label: "Preferences"
-  #   description: "Optional preferences"
+    label: "Subreddit"
+    description: "Name of the subreddit to analyze (e.g., 'selfhosted' without r/)"
+  research_question:
+    type: string
+    required: true
+    label: "Research Question"
+    description: "The specific question you want answered about this community"
+  time_period_days:
+    type: integer
+    required: false
+    label: "Time Period (Days)"
+    description: "How many days back to analyze (default: 7, recommended: 7-14)"
+    default: 7
 
 # ============================================================================
 # BEHAVIORAL CHARACTERISTICS
@@ -84,11 +74,11 @@ input_schema:
 
 facets:
   context: professional      # personal | professional | general
-  autonomy: Co-pilot        # Assist | Co-pilot | Auto-pilot
-  latency: near-real-time   # real-time | interactive | near-real-time | batch
+  autonomy: Auto-pilot      # Assist | Co-pilot | Auto-pilot
+  latency: batch            # real-time | interactive | near-real-time | batch
   cost_profile: free        # free | $/task | $/month | $/hour
   modalities: [text]        # text | image | audio | video
-  domains: [text]           # Domains this agent specializes in
+  domains: [market-research, community-analysis, sentiment-analysis]
   model_tooling: [LLM]      # LLM | RAG | fine-tuned | embeddings
   industries: []            # legal | healthcare | finance
   integrations: []          # Google Drive | Gmail | Slack
@@ -100,13 +90,27 @@ facets:
 release_notes: |
   ## Initial Release
 
-  First public release of the agent.
+  First public release of the Subreddit Research Agent.
 
   ### Features
-  - Historical event lookup by date
-  - Creative story generation
-  - Simple date-based interface
+  - Analyze subreddit discussions to answer specific research questions
+  - AI-powered keyword generation for targeted search
+  - Intelligent thread filtering with relevance scoring
+  - Deep analysis of posts and comments (up to 50 comments per thread)
+  - Evidence-based synthesis with strength ratings (strong/moderate/weak)
+  - Strategic recommendations with priority levels
+  - Professional reports in JSON, Markdown, and PDF formats
+
+  ### Use Cases
+  - Market research and product validation
+  - Community sentiment analysis
+  - Competitive intelligence gathering
+  - User research and pain point discovery
 
   ### Dependencies
-  - Gemma 3 1B model
-  - No external API dependencies
+  - Claude Sonnet 4.5 model
+  - Reddit API (free developer credentials required)
+
+  ### Recommended Settings
+  - Time period: 7-14 days for best balance of recency and sample size
+  - Expected runtime: ~2.5 minutes per day of lookback (~35 minutes for 14 days)

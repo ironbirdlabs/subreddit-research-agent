@@ -11,23 +11,31 @@
 # AGENT IDENTITY
 # ============================================================================
 
-developer: your-org          # Your GitHub username or organization (must match folder name)
-name: demo-agent            # Agent name (lowercase, alphanumeric, hyphens only)
-description: "Demo agent that returns historical events for a date and creates a story"
+developer: ironbirdlabs          # Your GitHub username or organization (must match folder name)
+name: subreddit-research-agent   # Agent name (lowercase, alphanumeric, hyphens only)
+description: "AI agent that analyzes Reddit communities to answer specific research questions with comprehensive market intelligence reports"
 
 # Container image reference (without tag - version tag will be auto-derived)
-container_image: ""  # e.g., docker.io/your-org/demo-agent
+container_image: ""  # e.g., docker.io/ironbirdlabs/subreddit-research-agent
 
 # Source repository URL (optional)
-source_repository_url: ""  # e.g., https://github.com/your-org/demo-agent
+source_repository_url: ""  # e.g., https://github.com/ironbirdlabs/subreddit-research-agent
 
 # High-level discovery metadata
 primary_function: research  # research | create | process | monitor | automate | analyze
 
 tags:
-  - demo
-  - history
+  - reddit
+  - market-research
+  - community-analysis
+  - sentiment-analysis
+  - competitive-intelligence
 
 capabilities:
-  - Look up historical events by date
-  - Generate creative stories from facts
+  - Analyze subreddit discussions to answer research questions
+  - Generate targeted search keywords using LLM
+  - Filter and score threads for relevance
+  - Perform deep analysis of comments and threads
+  - Synthesize findings with evidence strength ratings
+  - Generate strategic recommendations
+  - Produce professional PDF/JSON/Markdown reports
