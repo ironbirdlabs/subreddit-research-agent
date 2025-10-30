@@ -61,6 +61,9 @@ meta: Dict[str, Any] = {**agent_identity, **agent_metadata}
 
 app = FastAPI(title=meta.get("name", "Agent"), version=meta.get("version", "0.1.0"))
 
+# Artifacts directory for storing output files
+ARTIFACTS_ROOT = pathlib.Path("/artifacts")
+
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Reddit API Client
@@ -954,6 +957,7 @@ async def invoke(request: Request, req: InvokeRequest) -> InvokeResponse:
     import tempfile
 
     pdf_base64 = ""
+    pdf_bytes = b""
     try:
         with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as tmp_pdf:
             pdf = MarkdownPdf()
@@ -962,12 +966,35 @@ async def invoke(request: Request, req: InvokeRequest) -> InvokeResponse:
 
             # Read PDF and encode as base64
             with open(tmp_pdf.name, 'rb') as f:
-                pdf_base64 = base64.b64encode(f.read()).decode('utf-8')
+                pdf_bytes = f.read()
+                pdf_base64 = base64.b64encode(pdf_bytes).decode('utf-8')
 
         logger.info("PDF generated successfully")
     except Exception as e:
         logger.warning(f"PDF generation failed: {e}")
         pdf_base64 = ""
+
+    # Save artifacts to /artifacts/{thread_id}/out/
+    if thread_id:
+        try:
+            out_dir = ARTIFACTS_ROOT / thread_id / "out"
+            out_dir.mkdir(parents=True, exist_ok=True)
+
+            # Write JSON report
+            (out_dir / "report.json").write_text(
+                json.dumps(final_state["report_json"], indent=2)
+            )
+
+            # Write Markdown report
+            (out_dir / "report.md").write_text(final_state["report_markdown"])
+
+            # Write PDF report (if generated successfully)
+            if pdf_bytes:
+                (out_dir / "report.pdf").write_bytes(pdf_bytes)
+
+            logger.info(f"Artifacts saved to {out_dir}")
+        except Exception as e:
+            logger.warning(f"Failed to save artifacts: {e}")
 
     # Return the results
     return InvokeResponse(
