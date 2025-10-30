@@ -11,7 +11,7 @@ ARG GIT_COMMIT=unknown
 # -----------------------------------------------------------------------------
 # Builder stage – install deps, build app, and collect ALL licenses
 # -----------------------------------------------------------------------------
-FROM python:3.13-slim AS builder
+FROM python:3.14-slim AS builder
 
 ENV PYTHONUNBUFFERED=1
 WORKDIR /app
@@ -206,7 +206,7 @@ RUN pip uninstall -y pip-licenses || true
 # -----------------------------------------------------------------------------
 # Final stage – minimal runtime image with attribution
 # -----------------------------------------------------------------------------
-FROM python:3.13-slim
+FROM python:3.14-slim
 
 # Re-declare args for final stage
 ARG VERSION=unknown
