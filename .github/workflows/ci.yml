@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dev dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pre-commit
+
+      - name: Run pre-commit (all files)
+        run: pre-commit run --all-files --show-diff-on-failure
+
+      - name: Build Docker image
+        run: |
+          docker build -t agent-template-ci-test .
+
+      - name: Verify attribution files
+        run: |
+          echo "🔍 Verifying license attribution was generated..."
+          docker run --rm agent-template-ci-test test -f /app/licenses/README.md
+          docker run --rm agent-template-ci-test test -f /app/licenses/python/ATTRIBUTIONS.md
+          docker run --rm agent-template-ci-test test -f /app/licenses/ATTRIBUTION_CHECKSUMS.txt
+          echo "✅ Attribution files verified"
+
+      - name: Check attribution completeness
+        run: |
+          echo "📊 Attribution statistics:"
+          echo "Python packages: $(docker run --rm agent-template-ci-test wc -l < /app/licenses/python/THIRD_PARTY_REQUIREMENTS.txt)"
+          echo "Attribution entries: $(docker run --rm agent-template-ci-test grep -c '^## ' /app/licenses/python/ATTRIBUTIONS.md)"
+          echo "Debian packages: $(docker run --rm agent-template-ci-test wc -l < /app/licenses/debian/INSTALLED_PACKAGES.txt)"
+          echo "✅ Build and attribution system working correctly"

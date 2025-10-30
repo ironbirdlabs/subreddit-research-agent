@@ -1,0 +1,36 @@
+# docker-standard.yml
+#
+# Pinned, trimmed copy of Docker’s "compose-for-agents" sample compose file.
+# Upstream reference commit: docker/compose-for-agents@HEAD as of 2025-07-14.
+# We vendor it so our template remains self-contained while staying spec-compliant.
+#
+# Placeholders are wrapped in ${…} so cookiecutter / SDK init can inject values.
+# -----------------------------------------------------------------------------
+
+
+services:
+  # ---------------------------------------------------------------------------
+  # Agent service.
+  # ---------------------------------------------------------------------------
+  agent:
+    build:
+      context: ..
+    image: ${IMAGE_NAME:-yourorg/youragent:latest}
+
+    labels:
+      com.docker.compose.ai.role: "agent"
+      ai.docker.compose.spec: "v0.1"
+      # Required by our marketplace gateway for automatic port binding.
+      agent.port: "${AGENT_INTERNAL_PORT:-8000}"
+    ports:
+      - "${AGENT_PORT:-8000}:${AGENT_INTERNAL_PORT:-8000}"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:${AGENT_INTERNAL_PORT:-8000}/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+# Optional: add vector-databases or tool services here.
+# The compose-for-agents spec only cares that each service declares the
+# `com.docker.compose.ai.role` label and exposes a health check.

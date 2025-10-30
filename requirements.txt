@@ -1,0 +1,16 @@
+fastapi>=0.110.2,<0.117
+uvicorn[standard]>=0.29,<0.36
+pyyaml>=6.0.1,<7
+python-dotenv>=1.0
+langchain-core>=0.1.33
+langchain>=0.1.16
+langgraph>=0.0.39
+langchain-anthropic>=0.1.9
+langchain-openai>=0.1.0
+langchain-aws>=0.1.0
+langchain-ollama>=0.1.0
+langfuse>=2.11.0
+# Agent runtime toolkit for model routing and progress tracking
+# Note: The toolkit[langchain] extra includes most provider dependencies,
+# but we include them explicitly here for clarity and future compatibility
+agentsystems-toolkit[langchain]>=0.1.2
