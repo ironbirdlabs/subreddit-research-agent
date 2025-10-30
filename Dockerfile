@@ -241,14 +241,13 @@ COPY --from=builder /app/licenses /app/licenses
 RUN echo "{\"version\": \"${VERSION}\", \"build_timestamp\": \"${BUILD_TIMESTAMP}\", \"git_commit\": \"${GIT_COMMIT}\"}" > /app/version.json
 
 # OCI labels for container metadata
-# TODO: Customize title and vendor for your agent
-LABEL org.opencontainers.image.title="Your Agent Name" \
-      org.opencontainers.image.description="AI agent with license attribution" \
-      org.opencontainers.image.vendor="Your Organization" \
+LABEL org.opencontainers.image.title="Subreddit Research Agent" \
+      org.opencontainers.image.description="AI agent that analyzes Reddit communities to answer research questions" \
+      org.opencontainers.image.vendor="ironbirdlabs" \
       org.opencontainers.image.licenses="Apache-2.0" \
       org.opencontainers.image.license.files="/app/licenses" \
       org.opencontainers.image.license.verification="/app/licenses/ATTRIBUTION_CHECKSUMS.txt" \
-      org.opencontainers.image.source="https://github.com/agentsystems/agent-template" \
+      org.opencontainers.image.source="https://github.com/ironbirdlabs/subreddit-research-agent" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_TIMESTAMP}" \
       org.opencontainers.image.revision="${GIT_COMMIT}"

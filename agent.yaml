@@ -16,10 +16,10 @@ name: subreddit-research-agent   # Agent name (lowercase, alphanumeric, hyphens 
 description: "AI agent that analyzes Reddit communities to answer specific research questions with comprehensive market intelligence reports"
 
 # Container image reference (without tag - version tag will be auto-derived)
-container_image: ""  # e.g., docker.io/ironbirdlabs/subreddit-research-agent
+container_image: "docker.io/ironbirdlabs/subreddit-research-agent"
 
 # Source repository URL (optional)
-source_repository_url: ""  # e.g., https://github.com/ironbirdlabs/subreddit-research-agent
+source_repository_url: "https://github.com/ironbirdlabs/subreddit-research-agent"
 
 # High-level discovery metadata
 primary_function: research  # research | create | process | monitor | automate | analyze
