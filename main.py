@@ -81,7 +81,7 @@ class RedditFetcher:
         # Test authentication
         try:
             self.reddit.user.me()
-        except:
+        except Exception:
             # We're in read-only mode (no user context needed for public data)
             pass
 
