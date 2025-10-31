@@ -10,7 +10,7 @@
 # VERSION METADATA
 # ============================================================================
 
-version: "0.1.0" # Semantic version: x.y.z or x.y.z-beta.1 (used as container image tag)
+version: "0.1.1" # Semantic version: x.y.z or x.y.z-beta.1 (used as container image tag)
 
 # ============================================================================
 # MATURITY & ACCESS
@@ -26,7 +26,7 @@ source_repository_access: public # public | private
 # ============================================================================
 
 model_dependencies:
-    - gemma3:4b
+    - gpt-oss:20b
 
 required_egress:
     - https://www.reddit.com # Reddit for authentication
@@ -126,7 +126,7 @@ release_notes: |
     - User research and pain point discovery
 
     ### Dependencies
-    - Gemma3:4b model
+    - gpt-oss:20b model
     - Reddit API (free developer credentials required)
 
     ### Recommended Settings
