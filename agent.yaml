@@ -39,3 +39,19 @@ capabilities:
   - Synthesize findings with evidence strength ratings
   - Generate strategic recommendations
   - Produce professional PDF/JSON/Markdown reports
+
+# Required credentials for agent execution
+required_credentials:
+  - name: REDDIT_CLIENT_ID
+    description: Reddit API client ID
+  - name: REDDIT_CLIENT_SECRET
+    description: Reddit API client secret
+  - name: REDDIT_USER_AGENT
+    description: User agent string (e.g., "myapp:v1.0.0")
+
+# Setup instructions for users
+setup_instructions: |
+  1. Go to https://www.reddit.com/prefs/apps
+  2. Click "Create App" and select "script" type
+  3. Copy the Client ID (under app name) and Secret
+  4. Create a user agent string like "myapp:v1.0.0"
