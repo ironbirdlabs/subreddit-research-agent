@@ -224,7 +224,7 @@ class ResearchState(TypedDict):
 # Model Configuration
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-model = get_model("claude-sonnet-4-5", "langchain", temperature=0)
+model = get_model("gemma3:4b", "langchain", temperature=0)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
